@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+    <!-- 引入application-spring.xml配置文件 -->
+    <import resource="application-spring.xml" />
+
+    <!-- 包进行扫描，实现注释驱动Bean定义，同时将bean自动注入容器中使用... -->
+    <mvc:annotation-driven conversion-service="myConversionService">
+        <!-- 配置数据转换 -->
+        <mvc:message-converters>
+            <!-- 配置json数据乱码问题 -->
+            <bean id="shMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
+                <!-- HTTP规范，Content-Type -->
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+            <!-- 配置json数据传递日期格式问题 -->
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <!-- HTTP规范，Content-Type -->
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+                <property name="features">
+                    <list>
+                        <value>WriteDateUseDateFormat</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!-- 配置ConversionServiceFactoryBean,数据类型转换器 -->
+    <bean id="myConversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <!-- 引入自己配置的自定义转换器，将String类型转换为Date日期 -->
+                <bean class="pers.cgq.smbms.tools.StringToDateConverter">
+                    <constructor-arg name="datePatten" value="yyyy-MM-dd"/>
+                </bean>
+
+            </set>
+        </property>
+    </bean>
+
+    <!-- 加载静态文件时也会访问servlet，设置此标签，加载 会报404错误，通过<mvc:annotation-driven/>标签解决 -->
+    <mvc:default-servlet-handler />
+
+    <!-- 配置拦截器 -->
+    <mvc:interceptors>
+        <!-- 拦截每次请求，是否有登陆用户信息 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/sys/**"/>
+            <mvc:mapping path="/user/**"/>
+            <mvc:mapping path="/prov/**"/>
+            <mvc:mapping path="/bill/**"/>
+            <mvc:exclude-mapping path="login.html"/>
+            <mvc:exclude-mapping path="doLogin.html"/>
+            <mvc:exclude-mapping path="logout.html"/>
+            <bean class="pers.cgq.smbms.interceptor.SysInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
+
+    <!-- 多视图解析器FactoryBean -->
+    <bean id="cnManager"
+          class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <!-- 开启默认匹配,如果所有的mediaType都没匹配上，就会使用defaultContentType -->
+        <property name="defaultContentType" value="text/html"/>
+        <!-- 是否支持参数匹配,根据请求参数的值确定MIME类型，默认请求参数是format 在data参数后，添加format=json类型，将会匹配json数据格式 -->
+        <property name="favorParameter" value="true"/>
+        <!-- contentType以何种形式展示，若请求url后缀为.json(下面的key值)则会以value的形式展示数据 -->
+        <property name="mediaTypes">
+            <map>
+                <entry key="html" value="text/html;charset=UTF-8"/>
+                <entry key="json" value="application/json;charset=UTF-8"/>
+                <entry key="xml" value="application/xml;charset=UTF-8"/>
+            </map>
+        </property>
+    </bean>
+    <!-- 多视图解析器 ContentNegotiatingViewResolver -->
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <!-- 添加对ContentNegotiationManagerFactoryBean的引用 -->
+        <property name="contentNegotiationManager" ref="cnManager"/>
+        <!-- 网页视图解析器，由于使用的是JSP，所以配置InternalResourceViewResolver的Bean -->
+        <property name="viewResolvers">
+            <list>
+                <!-- 配置的网页试图解析器，jsp格式 -->
+                <bean
+                        class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+                    <!-- 配置，前缀，后缀 -->
+                    <property name="prefix" value="/WEB-INF/views/"/>
+                    <property name="suffix" value=".jsp"/>
+                </bean>
+
+            </list>
+        </property>
+    </bean>
+    <!-- 配置支持文件上传 -->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 默认编码格式UTF-8 -->
+        <property name="defaultEncoding" value="UTF-8"/>
+        <!-- 最大上传大小512000B -->
+        <!-- <property name="maxUploadSize" value="512000"></property> -->
+    </bean>
+</beans>

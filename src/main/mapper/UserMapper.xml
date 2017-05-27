@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.cgq.smbms.dao.UserMapper">
+	<resultMap id="BaseResultMap" type="user">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="userCode" jdbcType="VARCHAR" property="usercode" />
+		<result column="userName" jdbcType="VARCHAR" property="username" />
+		<result column="userPassword" jdbcType="VARCHAR" property="userpassword" />
+		<result column="gender" jdbcType="INTEGER" property="gender"/>
+		<result column="birthday" jdbcType="DATE" property="birthday" />
+		<result column="phone" jdbcType="VARCHAR" property="phone" />
+		<result column="address" jdbcType="VARCHAR" property="address" />
+		<result column="userRole" jdbcType="INTEGER" property="userrole" />
+		<result column="createdBy" jdbcType="BIGINT" property="createdby" />
+		<result column="creationDate" jdbcType="TIMESTAMP" property="creationdate" />
+		<result column="modifyBy" jdbcType="BIGINT" property="modifyby" />
+		<result column="modifyDate" jdbcType="TIMESTAMP" property="modifydate" />
+		<result column="idPicPath" jdbcType="VARCHAR" property="idpicpath"/>
+		<result column="workPicPath" jdbcType="VARCHAR" property="workpicpath"/>
+	</resultMap>
+	<resultMap id="supportUser" type="supportUser">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="userCode" jdbcType="VARCHAR" property="usercode" />
+		<result column="userName" jdbcType="VARCHAR" property="username" />
+		<result column="userPassword" jdbcType="VARCHAR" property="userpassword" />
+		<result column="gender" jdbcType="INTEGER" property="gender"/>
+		<result column="birthday" jdbcType="DATE" property="birthday" />
+		<result column="phone" jdbcType="VARCHAR" property="phone" />
+		<result column="address" jdbcType="VARCHAR" property="address" />
+		<result column="userRole" jdbcType="INTEGER" property="userrole" />
+		<result column="createdBy" jdbcType="BIGINT" property="createdby" />
+		<result column="creationDate" jdbcType="TIMESTAMP" property="creationdate" />
+		<result column="modifyBy" jdbcType="BIGINT" property="modifyby" />
+		<result column="modifyDate" jdbcType="TIMESTAMP" property="modifydate" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, userCode, userName, userPassword, gender, birthday,
+		phone, address,
+		userRole,
+		createdBy, creationDate, modifyBy, modifyDate,idPicPath,workPicPath
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from smbms_user
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		smbms_user
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="user">
+		insert into smbms_user (
+		userCode, userName,
+		userPassword, gender, birthday,
+		phone, address,
+		userRole,
+		createdBy, creationDate, modifyBy,
+		modifyDate,idPicPath,workPicPath)
+		values
+		(#{usercode,jdbcType=VARCHAR},
+		#{username,jdbcType=VARCHAR},
+		#{userpassword,jdbcType=VARCHAR},
+		#{gender,jdbcType=INTEGER}, #{birthday,jdbcType=DATE},
+		#{phone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+		#{userrole,jdbcType=INTEGER},
+		#{createdby,jdbcType=BIGINT},
+		#{creationdate,jdbcType=TIMESTAMP}, #{modifyby,jdbcType=BIGINT},
+		#{modifydate,jdbcType=TIMESTAMP},#{idpicpath,jdbcType=VARCHAR},#{workpicpath,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="user">
+		insert into smbms_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="usercode != null">
+				userCode,
+			</if>
+			<if test="username != null">
+				userName,
+			</if>
+			<if test="userpassword != null">
+				userPassword,
+			</if>
+			<if test="gender != null">
+				gender,
+			</if>
+			<if test="birthday != null">
+				birthday,
+			</if>
+			<if test="phone != null">
+				phone,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="userrole != null">
+				userRole,
+			</if>
+			<if test="createdby != null">
+				createdBy,
+			</if>
+			<if test="creationdate != null">
+				creationDate,
+			</if>
+			<if test="modifyby != null">
+				modifyBy,
+			</if>
+			<if test="modifydate != null">
+				modifyDate,
+			</if>
+			<if test="idpicpath!=null">
+				idPicPath,
+			</if>
+			<if test="workpicpath!=null">
+				workPicPath,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="usercode != null">
+				#{usercode,jdbcType=VARCHAR},
+			</if>
+			<if test="username != null">
+				#{username,jdbcType=VARCHAR},
+			</if>
+			<if test="userpassword != null">
+				#{userpassword,jdbcType=VARCHAR},
+			</if>
+			<if test="gender != null">
+				#{gender,jdbcType=INTEGER},
+			</if>
+			<if test="birthday != null">
+				#{birthday,jdbcType=DATE},
+			</if>
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="userrole != null">
+				#{userrole,jdbcType=INTEGER},
+			</if>
+			<if test="createdby != null">
+				#{createdby,jdbcType=BIGINT},
+			</if>
+			<if test="creationdate != null">
+				#{creationdate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyby != null">
+				#{modifyby,jdbcType=BIGINT},
+			</if>
+			<if test="modifydate != null">
+				#{modifydate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="idpicpath!=null">
+				#{idpicpath,jdbcType=VARCHAR}
+			</if>
+			<if test="workpicpath!=null">
+				#{workpicpath,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="user">
+		update smbms_user
+		<set>
+			<if test="usercode != null">
+				userCode = #{usercode,jdbcType=VARCHAR},
+			</if>
+			<if test="username != null">
+				userName = #{username,jdbcType=VARCHAR},
+			</if>
+			<if test="userpassword != null">
+				userPassword = #{userpassword,jdbcType=VARCHAR},
+			</if>
+			<if test="gender != null">
+				gender = #{gender,jdbcType=INTEGER},
+			</if>
+			<if test="birthday != null">
+				birthday = #{birthday,jdbcType=DATE},
+			</if>
+			<if test="phone != null">
+				phone = #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="userrole != null">
+				userRole = #{userrole,jdbcType=INTEGER},
+			</if>
+			<if test="createdby != null">
+				createdBy = #{createdby,jdbcType=BIGINT},
+			</if>
+			<if test="creationdate != null">
+				creationDate = #{creationdate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyby != null">
+				modifyBy = #{modifyby,jdbcType=BIGINT},
+			</if>
+			<if test="modifydate != null">
+				modifyDate = #{modifydate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="idpicpath!=null">
+				idPicPath=#{idpicpath,jdbcType=VARCHAR},
+			</if>
+			<if test="workpicpath!=null">
+				workPicPath=#{workpicpath,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+<!-- 	<update id="updateByPrimaryKey" parameterType="user">
+		update smbms_user
+		set userCode = #{usercode,jdbcType=VARCHAR},
+		userName =
+		#{username,jdbcType=VARCHAR},
+		userPassword =
+		#{userpassword,jdbcType=VARCHAR},
+		gender = #{gender,jdbcType=INTEGER},
+		birthday = #{birthday,jdbcType=DATE},
+		phone =
+		#{phone,jdbcType=VARCHAR},
+		address = #{address,jdbcType=VARCHAR},
+		userRole = #{userrole,jdbcType=INTEGER},
+		createdBy =
+		#{createdby,jdbcType=BIGINT},
+		creationDate =
+		#{creationdate,jdbcType=TIMESTAMP},
+		modifyBy =
+		#{modifyby,jdbcType=BIGINT},
+		modifyDate =
+		#{modifydate,jdbcType=TIMESTAMP},
+		idPicPath=#{idpicpath,jdbcType=VARCHAR},
+		workPicPath=#{workpicpath,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=BIGINT}
+	</update> -->
+	<!-- 登录 -->
+	<select id="login" resultMap="BaseResultMap">
+		select id,userCode,userPassword,userName from
+		smbms_user where userCode=#{userCode} and userPassword=#{userPassword}
+	</select>
+	<!-- 分页 -->
+	<select id="getPage" resultMap="supportUser">
+		select smbms_user.id,userCode,userName,gender,phone,birthday,address,FLOOR(DATEDIFF(CURDATE(),birthday)/365) AS age,roleName,idPicPath,workPicPath from smbms_user
+		inner join smbms_role on smbms_user.userRole=smbms_role.id
+		
+		<where>
+			<if test="queryName!=null">userName LIKE CONCAT('%',#{queryName},'%')</if>
+			<if test="queryUserRole!=0">AND smbms_role.id=#{queryUserRole}</if>
+			<if test="id!=0">and smbms_user.id=#{id}</if>
+		</where>
+		limit #{currentPageNo},#{pageSize}
+	</select>
+
+	
+	<!-- 获取用户个数 ,参数，查询条件:用户名，用户角色id，非必需-->
+	<select id="getTotalCount" resultType="int">
+		select count(id) from smbms_user
+		<where>
+			<if test="userName!=null">userName=#{userName}</if>
+			<if test="UserRole!=0">UserRole=#{UserRole}</if>
+		</where>
+	</select>
+	<!-- 通过用户名检查是否存在重复 -->
+	<select id="checkUserCode" parameterType="String" resultType="int">
+		SELECT COUNT(id) FROM smbms_user WHERE userCode=#{userCode}
+	</select>
+	
+	<!-- 通过用户编码查找id -->
+	<select id="selectIdByuserCode" parameterType="String" resultType="int">
+		select id from smbms_user where userCode=#{userCode}
+	</select>
+</mapper>

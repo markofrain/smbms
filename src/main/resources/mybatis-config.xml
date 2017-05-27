@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!-- 设置全局性懒加载，设置延迟加载为false。当开启时，所有关联对象都会延迟加载 -->
+        <setting name="lazyLoadingEnabled" value="false"/>
+        <!-- 打印查询语句 -->
+        <setting name="logImpl" value="STDOUT_LOGGING" />
+    </settings>
+    <typeAliases>
+        <typeAlias type="pers.cgq.smbms.tools.GenderTypeHandler" alias="genderTypeHandler"/>
+        <package name="pers.cgq.smbms.pojo"/>
+    </typeAliases>
+    <typeHandlers>
+        <!-- 	<typeHandler handler="genderTypeHandler" javaType="String" jdbcType="INTEGER"/> -->
+    </typeHandlers>
+</configuration>

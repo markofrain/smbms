@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.cgq.smbms.dao.ProviderMapper">
+  <resultMap id="BaseResultMap" type="provider">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="proCode" jdbcType="VARCHAR" property="procode" />
+    <result column="proName" jdbcType="VARCHAR" property="proname" />
+    <result column="proDesc" jdbcType="VARCHAR" property="prodesc" />
+    <result column="proContact" jdbcType="VARCHAR" property="procontact" />
+    <result column="proPhone" jdbcType="VARCHAR" property="prophone" />
+    <result column="proAddress" jdbcType="VARCHAR" property="proaddress" />
+    <result column="proFax" jdbcType="VARCHAR" property="profax" />
+    <result column="createdBy" jdbcType="BIGINT" property="createdby" />
+    <result column="creationDate" jdbcType="TIMESTAMP" property="creationdate" />
+    <result column="modifyDate" jdbcType="TIMESTAMP" property="modifydate" />
+    <result column="modifyBy" jdbcType="BIGINT" property="modifyby" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, proCode, proName, proDesc, proContact, proPhone, proAddress, proFax, createdBy, 
+    creationDate, modifyDate, modifyBy
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="int" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from smbms_provider
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="int">
+    delete from smbms_provider
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="provider">
+    insert into smbms_provider (id, proCode, proName, 
+      proDesc, proContact, proPhone, 
+      proAddress, proFax, createdBy, 
+      creationDate, modifyDate, modifyBy
+      )
+    values (#{id,jdbcType=BIGINT}, #{procode,jdbcType=VARCHAR}, #{proname,jdbcType=VARCHAR}, 
+      #{prodesc,jdbcType=VARCHAR}, #{procontact,jdbcType=VARCHAR}, #{prophone,jdbcType=VARCHAR}, 
+      #{proaddress,jdbcType=VARCHAR}, #{profax,jdbcType=VARCHAR}, #{createdby,jdbcType=BIGINT}, 
+      #{creationdate,jdbcType=TIMESTAMP}, #{modifydate,jdbcType=TIMESTAMP}, #{modifyby,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="provider">
+    insert into smbms_provider
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="procode != null">
+        proCode,
+      </if>
+      <if test="proname != null">
+        proName,
+      </if>
+      <if test="prodesc != null">
+        proDesc,
+      </if>
+      <if test="procontact != null">
+        proContact,
+      </if>
+      <if test="prophone != null">
+        proPhone,
+      </if>
+      <if test="proaddress != null">
+        proAddress,
+      </if>
+      <if test="profax != null">
+        proFax,
+      </if>
+      <if test="createdby != null">
+        createdBy,
+      </if>
+      <if test="creationdate != null">
+        creationDate,
+      </if>
+      <if test="modifydate != null">
+        modifyDate,
+      </if>
+      <if test="modifyby != null">
+        modifyBy,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="procode != null">
+        #{procode,jdbcType=VARCHAR},
+      </if>
+      <if test="proname != null">
+        #{proname,jdbcType=VARCHAR},
+      </if>
+      <if test="prodesc != null">
+        #{prodesc,jdbcType=VARCHAR},
+      </if>
+      <if test="procontact != null">
+        #{procontact,jdbcType=VARCHAR},
+      </if>
+      <if test="prophone != null">
+        #{prophone,jdbcType=VARCHAR},
+      </if>
+      <if test="proaddress != null">
+        #{proaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="profax != null">
+        #{profax,jdbcType=VARCHAR},
+      </if>
+      <if test="createdby != null">
+        #{createdby,jdbcType=BIGINT},
+      </if>
+      <if test="creationdate != null">
+        #{creationdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifydate != null">
+        #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyby != null">
+        #{modifyby,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="provider">
+    update smbms_provider
+    <set>
+      <if test="procode != null">
+        proCode = #{procode,jdbcType=VARCHAR},
+      </if>
+      <if test="proname != null">
+        proName = #{proname,jdbcType=VARCHAR},
+      </if>
+      <if test="prodesc != null">
+        proDesc = #{prodesc,jdbcType=VARCHAR},
+      </if>
+      <if test="procontact != null">
+        proContact = #{procontact,jdbcType=VARCHAR},
+      </if>
+      <if test="prophone != null">
+        proPhone = #{prophone,jdbcType=VARCHAR},
+      </if>
+      <if test="proaddress != null">
+        proAddress = #{proaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="profax != null">
+        proFax = #{profax,jdbcType=VARCHAR},
+      </if>
+      <if test="createdby != null">
+        createdBy = #{createdby,jdbcType=BIGINT},
+      </if>
+      <if test="creationdate != null">
+        creationDate = #{creationdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifydate != null">
+        modifyDate = #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyby != null">
+        modifyBy = #{modifyby,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <!-- 更改供应商信息 -->
+  <update id="updateByPrimaryKey" parameterType="provider">
+    update smbms_provider
+    <set>
+      <if test="procode!=null">proCode = #{procode,jdbcType=VARCHAR},</if>
+      <if test="proname!=null">proName = #{proname,jdbcType=VARCHAR},</if>
+      <if test="prodesc!=null">proDesc = #{prodesc,jdbcType=VARCHAR},</if>
+      <if test="procontact!=null">proContact = #{procontact,jdbcType=VARCHAR},</if>
+      <if test="prophone!=null">proPhone = #{prophone,jdbcType=VARCHAR},</if>
+      <if test="proaddress!=null">proAddress = #{proaddress,jdbcType=VARCHAR},</if>
+      <if test="profax!=null">proFax = #{profax,jdbcType=VARCHAR},</if>
+      <if test="createdby!=null">createdBy = #{createdby,jdbcType=BIGINT},</if>
+      <if test="creationdate!=null">creationDate = #{creationdate,jdbcType=TIMESTAMP},</if>
+      <if test="modifydate!=null">modifyDate = #{modifydate,jdbcType=TIMESTAMP},</if>
+      <if test="modifyby!=null">modifyBy = #{modifyby,jdbcType=BIGINT}</if>
+     </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <!-- 分页显示供应商信息 -->
+  <select id="findProviderInfoPage" resultMap="BaseResultMap">
+  	select id,proCode,proName,proContact,proPhone,proFax,creationDate from smbms_provider 
+  	<where>
+  		<if test="provCode!=null">proCode=#{provCode}</if>
+  		<if test="provName!=null">and proName=#{provName}</if>
+  	</where>
+  	limit #{agoInfoCount},#{pageSize}
+  </select>
+  <!-- 获得总记录数,参数，供应商名称，供应商编号 -->
+  <select id="getAllCount" resultType="int">
+  	select count(id) from smbms_provider 
+  	<where>
+  		<if test="provCode!=null">proCode=#{provCode}</if>
+  		<if test="provName!=null">proName=#{provName}</if>
+  	</where>
+  </select>
+  
+  <!-- 通过供应商id查询是否有订单 -->
+  <select id="getBillCountByProvId" parameterType="int" resultType="int">
+  	select count(smbms_bill.id) from smbms_bill 
+  		inner join smbms_provider on smbms_bill.providerId=smbms_provider.id 
+  			where smbms_provider.id=#{provId}
+  </select>
+  <!-- 通过供应商编号查询供应商是否存在 -->
+  <select id="isExistProv" parameterType="int" resultType="int">
+  	select count(id) from smbms_provider where id=#{provId}
+  </select>
+	<!-- 获得所有供应商的id和名称 -->
+  <select id="getIdAndName" resultMap="BaseResultMap">
+  	select id,proName from smbms_provider
+  </select>
+
+
+</mapper>

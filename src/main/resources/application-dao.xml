@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 引入配置文件 -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <!-- 配置数据源 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName" value="${driver}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${user}"/>
+        <property name="password" value="${password}"/>
+        <!-- 数据库连接初始化时，第一次就要连接的个数 -->
+        <property name="initialSize" value="${initialSize}"/>
+        <!-- 最大空闲连接数 -->
+        <property name="maxIdle" value="${maxIdle}"/>
+        <!-- 最小连接数 -->
+        <property name="minIdle" value="${minIdle}"/>
+        <!-- 最大等待连接时间 -->
+        <property name="maxWaitMillis" value="${maxWait}"/>
+        <!-- 开启无用连接回收机制 -->
+        <property name="removeAbandonedOnBorrow" value="${removeAbandoned}"/>
+        <!-- 超出配置事时间后尽快回收 -->
+        <property name="removeAbandonedTimeout" value="${removeAbandonedTimeout}"/>
+        <!--
+            sql 心跳
+            指在校验连接的同时,解决数据库重新连接的问题,确保连接池中的连接是真实有效的连接
+         -->
+        <!-- 连接空闲时，验证有效性 -->
+        <property name="testWhileIdle" value="true"/>
+        <!-- 从连接池获取一个连接时，验证有效性 -->
+        <property name="testOnBorrow" value="false"/>
+        <!-- 连接被归还到连接池时，验证有效性 -->
+        <property name="testOnReturn" value="false"/>
+        <!-- 定义校验使用的SQL语句，校验连接是否有效，SQL语句不要太复杂，会影响性能 -->
+        <property name="validationQuery" value="select 1"/>
+        <!--
+            空闲对象驱逐线程运行时的休眠毫秒数
+            空闲对象驱逐线程运行时的休眠毫秒数，如果设置为非正数，则不运行空闲对象驱逐线程。
+         -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+        <!-- 每次校验连接的数量-->
+        <property name="numTestsPerEvictionRun" value="${maxActive}"/>
+    </bean>
+
+    <!-- 配置SqlSessionFactoryBean，SqlSessionFactory实例 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 引入数据源 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 添加mybatis配置文件 -->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="mapperLocations">
+            <list><value>classpath:*Mapper.xml</value></list>
+        </property>
+    </bean>
+    <!-- 配置Mapper映射器管理 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="pers.cgq.smbms.dao"/>
+    </bean>
+</beans>

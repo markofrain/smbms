@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+                            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- 引入application-mybatis.xml -->
+    <import resource="application-dao.xml"/>
+    <!-- 扫描注解，自动注入到spring容器 -->
+    <context:component-scan base-package="pers.cgq.smbms"/>
+
+    <!-- 配置事务管理器 -->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+    <!-- 配置事务增强处理 -->
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+            <tx:method name="*" propagation="REQUIRED" rollback-for="Exception"/>
+        </tx:attributes>
+    </tx:advice>
+    <!-- 自动匹配,为spring容器中那些配置@aspectJ切面的bean创建代理，织入切面 -->
+    <aop:aspectj-autoproxy/>
+    <!-- AOP面向切面管理 -->
+    <aop:config>
+        <!-- 配置切入点 -->
+        <aop:pointcut id="transService" expression="execution(* pers.cgq.smbms.service..*(..))"/>
+        <!-- AOP增强处理 :引用事务增强处理，切入点-->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="transService"/>
+    </aop:config>
+</beans>
